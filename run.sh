@@ -6,7 +6,7 @@ set -euo pipefail
 PLUGIN_NAME="lvm-lab"
 SSH_PORT=2232
 DISK_SIZE="1G"
-DISK_COUNT=2
+DISK_COUNT=4
 
 echo "============================================="
 echo "  lvm-lab: LVM Disk Management Lab"
@@ -19,7 +19,7 @@ echo "    3. LVM snapshots for backups"
 echo "    4. Filesystem operations on LVM volumes"
 echo ""
 echo "  The VM will have ${DISK_COUNT} extra virtual disks (${DISK_SIZE} each)"
-echo "  available as /dev/vdb and /dev/vdc for LVM operations."
+echo "  available as /dev/vdb, /dev/vdc, /dev/vdd and /dev/vde for LVM operations."
 echo ""
 
 # Source QLab core libraries
@@ -119,16 +119,16 @@ write_files:
         \033[1;32mlvm-lab\033[0m — \033[1mLVM Disk Management Lab\033[0m
       \033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m
 
-        \033[1;33mDisks:\033[0m  /dev/vdb  /dev/vdc  (1G each, empty)
+        \033[1;33mDisks:\033[0m  /dev/vdb  /dev/vdc  /dev/vdd  /dev/vde  (1G each, empty)
 
         \033[1;33mQuick start — try these commands in order:\033[0m
 
-        \033[1;35m1.\033[0m \033[0;32msudo pvcreate /dev/vdb /dev/vdc\033[0m
-        \033[1;35m2.\033[0m \033[0;32msudo vgcreate labvg /dev/vdb /dev/vdc\033[0m
-        \033[1;35m3.\033[0m \033[0;32msudo lvcreate -L 800M -n data labvg\033[0m
+        \033[1;35m1.\033[0m \033[0;32msudo pvcreate /dev/vdb /dev/vdc /dev/vdd /dev/vde\033[0m
+        \033[1;35m2.\033[0m \033[0;32msudo vgcreate labvg /dev/vdb /dev/vdc /dev/vdd /dev/vde\033[0m
+        \033[1;35m3.\033[0m \033[0;32msudo lvcreate -L 2G -n data labvg\033[0m
         \033[1;35m4.\033[0m \033[0;32msudo mkfs.ext4 /dev/labvg/data\033[0m
         \033[1;35m5.\033[0m \033[0;32msudo mount /dev/labvg/data /mnt\033[0m
-        \033[1;35m6.\033[0m \033[0;32msudo lvextend -L +500M --resizefs /dev/labvg/data\033[0m
+        \033[1;35m6.\033[0m \033[0;32msudo lvextend -L +1G --resizefs /dev/labvg/data\033[0m
 
         \033[1;33mInspect:\033[0m
           \033[0;32mlsblk\033[0m   \033[0;32mpvs\033[0m   \033[0;32mvgs\033[0m   \033[0;32mlvs\033[0m   \033[0;32mdf -h /mnt\033[0m
@@ -208,7 +208,7 @@ echo ""
 # ready for pvcreate, vgcreate, lvcreate operations.
 info "Step 5: Extra virtual disks (${DISK_COUNT} x ${DISK_SIZE})"
 echo ""
-echo "  These disks will appear as /dev/vdb and /dev/vdc"
+echo "  These disks will appear as /dev/vdb, /dev/vdc, /dev/vdd and /dev/vde"
 echo "  inside the VM, ready for LVM operations."
 echo ""
 
@@ -248,6 +248,8 @@ echo ""
 echo "  Disk layout inside the VM:"
 echo "    /dev/vdb  (${DISK_SIZE}) — empty, for LVM"
 echo "    /dev/vdc  (${DISK_SIZE}) — empty, for LVM"
+echo "    /dev/vdd  (${DISK_SIZE}) — empty, for LVM"
+echo "    /dev/vde  (${DISK_SIZE}) — empty, for LVM"
 echo ""
 echo "  View boot log:"
 echo "    qlab log ${PLUGIN_NAME}"
