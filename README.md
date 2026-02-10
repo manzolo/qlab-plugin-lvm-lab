@@ -1,6 +1,10 @@
-# lvm-lab
+# lvm-lab — LVM Disk Management Lab
 
-A QEMU/KVM lab that boots a virtual machine with 2 extra virtual disks for practicing LVM (Logical Volume Manager) operations.
+[![QLab Plugin](https://img.shields.io/badge/QLab-Plugin-blue)](https://github.com/manzolo/qlab)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Linux-lightgrey)](https://github.com/manzolo/qlab)
+
+A [QLab](https://github.com/manzolo/qlab) plugin that boots a virtual machine with 2 extra virtual disks for practicing LVM (Logical Volume Manager) operations.
 
 ## Objectives
 
