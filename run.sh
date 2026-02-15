@@ -4,7 +4,6 @@
 set -euo pipefail
 
 PLUGIN_NAME="lvm-lab"
-SSH_PORT=2232
 DISK_SIZE="1G"
 DISK_COUNT=4
 
@@ -226,11 +225,11 @@ info "Step 6: Starting VM in background"
 echo ""
 echo "  The VM will run in background with:"
 echo "    - Serial output logged to .qlab/logs/$PLUGIN_NAME.log"
-echo "    - SSH access on port $SSH_PORT"
+echo "    - SSH access on a dynamically allocated port"
 echo "    - ${DISK_COUNT} extra disks attached for LVM practice"
 echo ""
 
-start_vm "$OVERLAY_DISK" "$CIDATA_ISO" "$MEMORY" "$PLUGIN_NAME" "$SSH_PORT" \
+start_vm "$OVERLAY_DISK" "$CIDATA_ISO" "$MEMORY" "$PLUGIN_NAME" auto \
     "${DRIVE_ARGS[@]}"
 
 echo ""
