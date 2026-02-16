@@ -199,7 +199,10 @@ if [[ -f "$OVERLAY_DISK" ]]; then
     info "Removing previous overlay disk..."
     rm -f "$OVERLAY_DISK"
 fi
-create_overlay "$CLOUD_IMAGE_FILE" "$OVERLAY_DISK" "${QLAB_DISK_SIZE:-}"
+create_overlay "$CLOUD_IMAGE_FILE" "$OVERLAY_DISK" "${QLAB_DISK_SIZE:-}" || {
+    error "Failed to create overlay disk."
+    exit 1
+}
 echo ""
 
 # Step 5: Create extra virtual disks for LVM practice
