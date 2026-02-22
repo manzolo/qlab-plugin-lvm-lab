@@ -82,8 +82,10 @@ A Physical Volume (PV) is an LVM-initialized disk or partition. The `pvcreate` c
 
 ### 2.1 Create PVs on two disks
 
+The `-f` flag forces creation, overwriting any existing signatures on the disks (e.g., old filesystem or LVM metadata):
+
 ```bash
-sudo pvcreate /dev/vdb /dev/vdc
+sudo pvcreate -f /dev/vdb /dev/vdc
 ```
 
 **Expected output:**
@@ -149,7 +151,7 @@ sudo vgs
 ### 3.3 Add a third PV
 
 ```bash
-sudo pvcreate /dev/vdd
+sudo pvcreate -f /dev/vdd
 sudo vgextend myvg /dev/vdd
 ```
 
@@ -173,8 +175,10 @@ Logical Volumes are the LVM equivalent of partitions — but flexible. You can c
 
 ### 4.1 Create an LV
 
+The `--yes` flag auto-confirms any prompts (e.g., wiping existing signatures):
+
 ```bash
-sudo lvcreate -L 500M -n mylv myvg
+sudo lvcreate --yes -L 500M -n mylv myvg
 ```
 
 ### 4.2 Check LV status
@@ -218,7 +222,7 @@ df -h /mnt/lvm
 ### 4.6 Create a second LV with XFS
 
 ```bash
-sudo lvcreate -L 300M -n xfslv myvg
+sudo lvcreate --yes -L 300M -n xfslv myvg
 sudo mkfs.xfs /dev/myvg/xfslv
 sudo mkdir -p /mnt/xfs
 sudo mount /dev/myvg/xfslv /mnt/xfs
@@ -285,7 +289,7 @@ LVM snapshots use Copy-on-Write (COW): when original data is about to change, th
 ### 6.1 Create a snapshot
 
 ```bash
-sudo lvcreate -s -L 200M -n mysnap /dev/myvg/mylv
+sudo lvcreate --yes -s -L 200M -n mysnap /dev/myvg/mylv
 ```
 
 ### 6.2 Verify snapshot exists
@@ -370,8 +374,11 @@ sudo vgremove myvg
 
 ### 7.4 Remove PVs
 
+The `-ff` flag forces removal even if the PVs still contain residual metadata. `wipefs -a` erases any remaining filesystem or partition-table signatures, leaving the disks truly clean:
+
 ```bash
-sudo pvremove /dev/vdb /dev/vdc /dev/vdd
+sudo pvremove -ff /dev/vdb /dev/vdc /dev/vdd
+sudo wipefs -a /dev/vdb /dev/vdc /dev/vdd
 ```
 
 ### 7.5 Verify clean state
@@ -403,7 +410,7 @@ sudo umount /mnt/lvm
 # Check free space in VG
 sudo vgs
 # Add another PV
-sudo pvcreate /dev/vde
+sudo pvcreate -f /dev/vde
 sudo vgextend myvg /dev/vde
 ```
 
