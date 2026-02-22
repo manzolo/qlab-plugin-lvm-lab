@@ -69,11 +69,28 @@ qlab stop lvm-lab
 
 ## Exercises
 
-1. **Create a volume group**: Initialize physical volumes with `pvcreate`, then create a VG with `vgcreate`
-2. **Create logical volumes**: Use `lvcreate` to create LVs, format with `mkfs.ext4` or `mkfs.xfs`, and mount
-3. **Resize a logical volume**: Extend an LV with `lvextend -L +500M --resizefs /dev/labvg/data`
-4. **LVM snapshots**: Create a snapshot with `lvcreate -L 100M -s -n snap1 /dev/labvg/data`, modify data, then restore
-5. **Inspect LVM state**: Use `pvs`, `vgs`, `lvs`, `pvdisplay`, `vgdisplay`, `lvdisplay` to examine the configuration
+> **New to LVM?** See the [Step-by-Step Guide](guide.md) for complete walkthroughs with detailed explanations.
+
+| # | Exercise | What you'll do |
+|---|----------|----------------|
+| 1 | **Storage Anatomy** | Explore available disks and LVM tools |
+| 2 | **Physical Volumes** | Initialize disks with `pvcreate`, inspect with `pvs` |
+| 3 | **Volume Groups** | Create and manage VGs with `vgcreate` |
+| 4 | **Logical Volumes** | Create LVs, format with ext4/xfs, mount |
+| 5 | **Resizing** | Extend VGs and LVs online with `lvextend --resizefs` |
+| 6 | **Snapshots** | Create LVM snapshots, modify data, rollback |
+| 7 | **Cleanup** | Remove LVs, VGs, and PVs cleanly |
+
+## Automated Tests
+
+An automated test suite validates the exercises against a running VM:
+
+```bash
+# Start the lab first
+qlab run lvm-lab
+# Wait ~60s for cloud-init, then run all tests
+qlab test lvm-lab
+```
 
 ## Resetting
 
